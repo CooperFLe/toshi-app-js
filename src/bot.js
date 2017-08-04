@@ -27,7 +27,9 @@ bot.onEvent = function(session, message) {
 }
 
 function onMessage(session, message) {
-  welcome(session)
+  if(message.body == 'Help'){
+    session.reply('This is a work in progress. Nothing works right now.')
+  }
 }
 
 function onCommand(session, command) {
