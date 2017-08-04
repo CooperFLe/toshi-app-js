@@ -35,7 +35,7 @@ function onMessage(session, message) {
       body: "Here is your turtle",
       attachments: [{
         "type": "image",
-        "url": "avatar.jpg"
+        "url": "turtle.png"
       }]
     }))
   }
