@@ -27,8 +27,17 @@ bot.onEvent = function(session, message) {
 }
 
 function onMessage(session, message) {
-  if(message.body == 'Help'){
+  if(message.body.toUpperCase() == 'HELP'){
     session.reply('This is a work in progress. Nothing works right now.')
+  }
+  if(message.body == 'Give me a turtle'){
+    session.reply(SOFA.Message({
+      body: "Here is your turtle",
+      attachments: [{
+        "type": "image",
+        "url": "avatar.jpg"
+      }]
+    }))
   }
 }
 
