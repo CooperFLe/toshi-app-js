@@ -5,4 +5,4 @@ node_modules
 docker-compose.yml
 .gradle
 .idea
-tasks.json
+.eslintrc.json
