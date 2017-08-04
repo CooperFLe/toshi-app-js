@@ -6,3 +6,4 @@ docker-compose.yml
 .gradle
 .idea
 .eslintrc.json
+.vscode
