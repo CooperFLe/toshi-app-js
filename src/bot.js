@@ -61,6 +61,9 @@ function onCommand(session, command) {
     case 'donate':
       donate(session)
       break
+    case 'reset':
+      reset(session)
+      break
     }
 }
 
@@ -100,7 +103,7 @@ function pong(session) {
 function count(session) {
   let count = (session.get('count') || 0) + 1
   session.set('count', count)
-  sendMessage(session, `${count}`)
+  sendMessage(session, 'Count: ' + count)
 }
 
 function donate(session) {
@@ -110,12 +113,18 @@ function donate(session) {
   })
 }
 
+function reset(session) {
+  //Clear set values
+  session.reset()
+  sendMessage(session,"Reset Session")
+}
 // HELPERS
 
 function sendMessage(session, message) {
   let controls = [
     {type: 'button', label: 'Ping', value: 'ping'},
     {type: 'button', label: 'Count', value: 'count'},
+    {type: 'button', label: 'Reset', value: 'reset'},
     {type: 'button', label: 'Donate', value: 'donate'}
   ]
   session.reply(SOFA.Message({
