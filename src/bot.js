@@ -21,7 +21,14 @@ bot.onEvent = function(session, message) {
       onPayment(session, message)
       break
     case 'PaymentRequest':
-      welcome(session)
+        session.reply("Here is your Ether ;)");
+        session.reply(SOFA.Message({
+          body: "Here is your Ether",
+          attachments: [{
+            "type": "image",
+            "url": "ethereum.jpg"
+        }]
+      })) 
       break
   }
 }
