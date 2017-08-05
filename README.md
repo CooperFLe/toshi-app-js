@@ -1,64 +1,15 @@
-# Toshi SOFA App
+# Toshi Turtled App
 
-This repo helps you build a [Toshi app](https://www.toshi.org) in Javascript.
+This is currently little more than a chatbot. A very bad chatbot at that.
 
-The sample bot can:
+## Vision
+What I am working towards is a bot that will help you with your Coinbase transactions by notifying you when prices hit a certain threshold (high for selling and low for buying).
 
-* send messages
-* send and request money
-* create simple UI for buttons and menus
-* store sessions and state for each user
+The bot should also give you the ability to check your Bitcoin, Ether, and Litecoin wallets and allow you to move those coins around.
 
-TODO
+I first plan to implement this using API keys, but I later hope to implement OAuth2. First thing first, I need to get the Coinbase API to work properly. 
 
-* sending image messages
-* creating web view UIs
-
-## Launch your own Toshi app in 5 minutes
-
-Read our [guide to creating a Toshi app](http://developers.toshi.org/docs/creating-a-token-app).
-
-When ready, fork this repo and deploy it to Heroku.
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
-Then check out [`src/bot.js`](src/bot.js) to start changing the bot logic.
-
-## Running locally with Docker
-
-You can run the project locally with
-
-```
-docker-compose up
-```
-
-If any new depencies are added you can rebuild the project with
-
-```
-docker-compose build
-```
-
-To reset the postgres database in your dev environment you can use
-
-```
-docker-compose down -v
-```
-
-## Architecture
-
-Deploying a Toshi app requires a few processes to run:
-
-* **toshi-headless-client**<br>
-  This is a client we provide (similar to the iOS or Android client) that provides a wrapper around the Toshi backend services. It also handles end-to-end encrypting all messages using the Signal protocol. It is written in Java and runs in the background, proxying all the requests to amd from your bot.
-* **redis**<br>
-  We use redis pub/sub to provide a connection between the toshi-headless-client and your bot.
-* **bot.js**<br>
-  This is where all your app logic lives.
-* **postgres**<br>
-  Postgres is used to store session data so you can persist state for each user who talks to your bot (similar to cookies in a web browser).
-
-![diagram](docs/images/app-architecture.png)
-
-## See also
-
-* [https://www.toshi.org]
+Todo:
+- Setup Coinbase API
+- Create way for users to add own Coinbase API
+- Show users their balances in their Coinbase accounts
