@@ -98,7 +98,8 @@ function onPayment(session, message) {
 // STATES
 
 function welcome(session) {
-  sendMessage(session, `Hello Token!`)
+  session.set('isFirstTimer', true)
+  sendMessage(session, `Hello! I am the Turtled Bot.`)
 }
 
 function api(session) {
@@ -107,7 +108,7 @@ function api(session) {
     showKeyboard: false,
   }))
   session.reply(SOFA.Message({
-    body: 'I will need access to all the wallets you want to see the balances of and the ability to read your accounts.',
+    body: 'I will need the ability to read all of your accounts in order to show you your balances.', 
     showKeyboard: true,
   }))
 }
@@ -131,20 +132,30 @@ function donate(session) {
 }
 
 function help(session) {
+  let isFirstTimer = (session.get('isFirstTimer'))
   let controls = [
       {type: 'button', label: 'Set up Coinbase', value: 'api'},
       {type: 'button', label: 'Reset', value: 'reset'},
       {type: 'button', label: 'Donate', value: 'donate'}
     ]
-    session.reply("I am a simple bot designed to help you interact with your Coinbase account.")
-    session.reply("In order to use me, you will need to submit your API key because I am too lazy to learn how to implement OAuth2.")
-    session.reply("My creator doesn't have access to your API key or your Coinbase account, but you don't have to believe me or him. You can check my code!") 
-    session.reply("While you are checking out the code, feel free to contribute to the project.")
-    session.reply(SOFA.Message({
-    body: "The source code can be found at https://github.com/cooperfle/toshi-app-js",
-    controls: controls,
-    showKeyboard: false,
-  }))
+    if(isFirstTimer){ 
+     session.reply("I am a simple bot designed to help you interact with your Coinbase account.")
+     session.reply("In order to use me, you will need to submit your API key because I am too lazy to learn how to implement OAuth2.")
+     session.reply("My creator doesn't have access to your API key or your Coinbase account, but you don't have to believe me or him. You can check my code!") 
+     session.reply("While you are checking out the code, feel free to contribute to the project.")
+     session.reply(SOFA.Message({
+       body: "The source code can be found at https://github.com/cooperfle/toshi-app-js",
+       controls: controls,
+       showKeyboard: false,
+     }))
+     session.set('isFirstTimer',false)
+    }else{
+      session.reply(SOFA.Message({
+        body: "I am a simple bot designed to help you interact with your Coinbase account.",
+        controls: controls,
+        showKeyboard: false,
+      }))
+    }
 }
 
 function reset(session) {
