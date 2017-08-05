@@ -35,19 +35,7 @@ bot.onEvent = function(session, message) {
 
 function onMessage(session, message) {
   if(message.body.toUpperCase() == 'HELP'){
-    let whatis = "Turtled Bot is a simple bot I created to view my Coinbase balances. In order to use this bot, you will need to submit your API key because I am too lazy to learn how to implement to Oath2 token. I am not storing this key in anyway, but you don't have to believe me. The source code can be found at https://github.com/cooperfle/toshi-app-js"
-    let controls = [
-      {type: 'button', label: 'Set up Coinbase', value: 'api'},
-      {type: 'button', label: 'Reset', value: 'reset'},
-      {type: 'button', label: 'Donate', value: 'donate'}
-    ]
-    
-    session.reply(SOFA.Message({
-    body: whatis,
-    controls: controls,
-    showKeyboard: false,
-  }))
-    
+    help(session)    
   }else
     if(message.body == 'Give me a turtle'){
       session.reply(SOFA.Message({
@@ -75,6 +63,9 @@ function onCommand(session, command) {
       break
     case 'donate':
       donate(session)
+      break
+    case 'help':
+      help(session)
       break
     case 'reset':
       reset(session)
@@ -139,6 +130,23 @@ function donate(session) {
   })
 }
 
+function help(session) {
+  let controls = [
+      {type: 'button', label: 'Set up Coinbase', value: 'api'},
+      {type: 'button', label: 'Reset', value: 'reset'},
+      {type: 'button', label: 'Donate', value: 'donate'}
+    ]
+    session.reply("I am a simple bot designed to help you interact with your Coinbase account.")
+    session.reply("In order to use me, you will need to submit your API key because I am too lazy to learn how to implement OAuth2.")
+    session.reply("My creator doesn't have access to your API key or your Coinbase account, but you don't have to believe me or him. You can check my code!") 
+    session.reply("While you are checking out the code, feel free to contribute to the project.")
+    session.reply(SOFA.Message({
+    body: "The source code can be found at https://github.com/cooperfle/toshi-app-js",
+    controls: controls,
+    showKeyboard: false,
+  }))
+}
+
 function reset(session) {
   //Clear set values
   session.reset()
@@ -151,7 +159,8 @@ function sendMessage(session, message) {
     {type: 'button', label: 'Ping', value: 'ping'},
     {type: 'button', label: 'Count', value: 'count'},
     {type: 'button', label: 'Reset', value: 'reset'},
-    {type: 'button', label: 'Donate', value: 'donate'}
+    {type: 'button', label: 'Donate', value: 'donate'},
+    {type: 'help', label: 'Help', value: 'help'}
   ]
   session.reply(SOFA.Message({
     body: message,
