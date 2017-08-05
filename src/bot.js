@@ -1,7 +1,7 @@
 const Bot = require('./lib/Bot')
 const SOFA = require('sofa-js')
 const Fiat = require('./lib/Fiat')
-
+const Client = require('coinbase').Client
 let bot = new Bot()
 
 // ROUTING
@@ -34,32 +34,31 @@ bot.onEvent = function(session, message) {
 }
 
 function onMessage(session, message) {
-  if(message.body.toUpperCase() == 'HELP'){
-    help(session)    
+  if(message.body.substring(0,8).toUpperCase() == 'API KEY:'){
+    let apiKey = session.get('apiKey')
+    apiKey = message.body.substring(9)
+    session.set('apiKey',apiKey)
+    session.reply('Your API Key is now: ' + session.get('apiKey'))
+    if(!session.get('secretKey'))
+      session.reply('Now you need to set your API secret key')
   }else
-    if(message.body == 'Give me a turtle'){
-      session.reply(SOFA.Message({
-        body: "Here is your turtle",
-        attachments: [{
-          "type": "image",
-          "url": "turtle.png"
-        }]
-      }))
-    }else{
-      session.reply(message)
-    }
+   if(message.body == 'Give me a turtle'){
+     session.reply(SOFA.Message({
+       body: "Here is your turtle",
+       attachments: [{
+         "type": "image",
+         "url": "turtle.png"
+       }]
+     }))
+   }else{
+     help(session)
+   }
 }
 
 function onCommand(session, command) {
   switch (command.content.value) {
-    case 'ping':
-      pong(session)
-      break
     case 'api':
       api(session)
-      break
-    case 'count':
-      count(session)
       break
     case 'donate':
       donate(session)
@@ -94,34 +93,17 @@ function onPayment(session, message) {
     }
   }
 }
-
 // STATES
 
 function welcome(session) {
   session.set('isFirstTimer', true)
-  sendMessage(session, `Hello! I am the Turtled Bot.`)
+  session.reply('Hello! I am the Turtled Bot.sendMessage(session, ')
 }
 
 function api(session) {
-  session.reply(SOFA.Message({
-    body: 'You need to get your API key from Coinbase at https://www.coinbase.com/settings/api',
-    showKeyboard: false,
-  }))
-  session.reply(SOFA.Message({
-    body: 'I will need the ability to read all of your accounts in order to show you your balances.', 
-    showKeyboard: true,
-  }))
-}
-
-function pong(session) {
-  sendMessage(session, `Pong`)
-}
-
-// example of how to store state on each user
-function count(session) {
-  let count = (session.get('count') || 0) + 1
-  session.set('count', count)
-  sendMessage(session, 'Count: ' + count)
+  session.reply('You need to get your API key from Coinbase at https://www.coinbase.com/settings/api')
+  session.reply('I will need the ability to read all of your accounts in order to show you your balances.')
+  session.reply('Please reply with "API Key: [your key]"')
 }
 
 function donate(session) {
@@ -161,14 +143,11 @@ function help(session) {
 function reset(session) {
   //Clear set values
   session.reset()
-  sendMessage(session,"Reset Session")
 }
 // HELPERS
 
 function sendMessage(session, message) {
   let controls = [
-    {type: 'button', label: 'Ping', value: 'ping'},
-    {type: 'button', label: 'Count', value: 'count'},
     {type: 'button', label: 'Reset', value: 'reset'},
     {type: 'button', label: 'Donate', value: 'donate'},
     {type: 'help', label: 'Help', value: 'help'}
@@ -178,4 +157,4 @@ function sendMessage(session, message) {
     controls: controls,
     showKeyboard: false,
   }))
-}
+ }
