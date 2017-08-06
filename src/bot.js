@@ -34,25 +34,12 @@ bot.onEvent = function(session, message) {
 }
 
 function onMessage(session, message) {
-  if(message.body.substring(0,8).toUpperCase() == 'API KEY:'){
-    let apiKey = session.get('apiKey')
-    apiKey = message.body.substring(9)
-    session.set('apiKey',apiKey)
-    session.reply('Your API Key is now: ' + session.get('apiKey'))
-    if(!session.get('secretKey'))
-      session.reply('Now you need to set your API secret key')
-  }else
-   if(message.body == 'Give me a turtle'){
-     session.reply(SOFA.Message({
-       body: "Here is your turtle",
-       attachments: [{
-         "type": "image",
-         "url": "turtle.png"
-       }]
-     }))
-   }else{
-     help(session)
-   }
+  if(message.body.substring(0,8).toUpperCase() == 'API KEY:') {
+    setAPIKey(session, message)
+  }
+  else {
+    help(session)
+  }
 }
 
 function onCommand(session, command) {
@@ -104,6 +91,15 @@ function api(session) {
   session.reply('You need to get your API key from Coinbase at https://www.coinbase.com/settings/api')
   session.reply('I will need the ability to read all of your accounts in order to show you your balances.')
   session.reply('Please reply with "API Key: [your key]"')
+}
+
+function setAPIKey(session, message) {
+   let apiKey = session.get('apiKey')
+   apiKey = message.body.substring(9)
+   session.set('apiKey',apiKey)
+   session.reply('Your API Key is now: ' + session.get('apiKey'))
+     if(!session.get('secretKey'))
+       session.reply('Now you need to set your API secret key')
 }
 
 function donate(session) {
